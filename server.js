@@ -10,12 +10,25 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', async (req, res) => {
-    const shortUrls = await ShortUrl.find()
-    res.render('index', { shortUrls: shortUrls });
+    const tynyUrl = localStorage.getItem('tynyUrl') != undefined ? localStorage.getItem('tynyUrl') : [];
+    //console.log('tynyUrl', JSON.parse(localStorage.getItem('tynyUrl')));
+    console.log('shortUrls', tynyUrl);
+    res.render('index', { shortUrls: JSON.parse(tynyUrl) });
 });
 
 app.post('/shortUrls', async (req, res) => {
-    await ShortUrl.create({ full: req.body.fullUrl });
+    await ShortUrl.create({ full: req.body.fullUrl })
+        .then(tynyUrl => {
+            let temp;
+            if (localStorage.getItem('tynyUrl')) {
+                temp = JSON.stringify([tynyUrl, localStorage.getItem('tynyUrl')]);
+            } else {
+                temp = JSON.stringify([tynyUrl]);
+            }
+            console.log(temp);
+            localStorage.setItem('tynyUrl', temp);
+        })
+        .catch(res.sendStatus(404));
     res.redirect('/');
 });
 

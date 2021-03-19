@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/', async (req, res) => {
     const tynyUrl = localStorage.getItem('tynyUrl') != undefined ? localStorage.getItem('tynyUrl') : [];
     //console.log('tynyUrl', JSON.parse(localStorage.getItem('tynyUrl')));
-    console.log('shortUrls', tynyUrl);
     res.render('index', { shortUrls: JSON.parse(tynyUrl) });
 });
 

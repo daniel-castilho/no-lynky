@@ -1,1 +1,1 @@
-web: node -r node-localstorage/register server.js
+web: node server.js

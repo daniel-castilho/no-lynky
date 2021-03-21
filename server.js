@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/ShortUrl');
+const cors = require('cors');
 const app = express();
 
 mongoose.connect('mongodb+srv://tyny:j60w9P2auUXwVcVK@cluster0.sx04z.mongodb.net/tyny?retryWrites=true&w=majority', {
@@ -8,26 +9,15 @@ mongoose.connect('mongodb+srv://tyny:j60w9P2auUXwVcVK@cluster0.sx04z.mongodb.net
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get('/', async (req, res) => {
-    const tynyUrl = localStorage.getItem('tynyUrl') != undefined ? localStorage.getItem('tynyUrl') : [];
-    //console.log('tynyUrl', JSON.parse(localStorage.getItem('tynyUrl')));
-    res.render('index', { shortUrls: JSON.parse(tynyUrl) });
+    const shortUrls = await ShortUrl.find();
+    res.render('index', { shortUrls: shortUrls });
 });
 
 app.post('/shortUrls', async (req, res) => {
-    await ShortUrl.create({ full: req.body.fullUrl })
-        .then(tynyUrl => {
-            let temp;
-            if (localStorage.getItem('tynyUrl')) {
-                temp = JSON.stringify([tynyUrl, localStorage.getItem('tynyUrl')]);
-            } else {
-                temp = JSON.stringify([tynyUrl]);
-            }
-            console.log(temp);
-            localStorage.setItem('tynyUrl', temp);
-        })
-        .catch(res.sendStatus(404));
+    await ShortUrl.create({ full: req.body.fullUrl });
     res.redirect('/');
 });
 

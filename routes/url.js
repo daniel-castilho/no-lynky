@@ -9,7 +9,6 @@ const ShortUrl = require('../models/ShortUrl');
 // @desc    Create short URL
 router.post('/shorten', async (req, res) => {
     const full = req.body.fullUrl;
-    console.log(req.body);
 
     // Check long url
     if (validUrl.isUri(full)) {

@@ -1,0 +1,5 @@
+{
+
+    "mongoURI": "mongodb+srv://tyny:j60w9P2auUXwVcVK@cluster0.sx04z.mongodb.net/tyny?retryWrites=true&w=majority",
+    "baseURL": "http://localhost:3000"
+}

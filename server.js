@@ -1,14 +1,18 @@
 const express = require('express');
+const connectDB = require('./config/db');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/ShortUrl');
 const cors = require('cors');
 const app = express();
 
-mongoose.connect('mongodb+srv://tyny:j60w9P2auUXwVcVK@cluster0.sx04z.mongodb.net/tyny?retryWrites=true&w=majority', {
-    useNewUrlParser: true, useUnifiedTopology: true });
+const PORT = 3000;
+
+// Connect to Database
+connectDB();
 
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ extended: false }));
 app.use(cors());
 
 app.get('/', async (req, res) => {
@@ -31,5 +35,5 @@ app.get('/:shortUrl', async (req, res) => {
     res.redirect(shortUrl.full);
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
 

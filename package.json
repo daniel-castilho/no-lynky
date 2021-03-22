@@ -7,7 +7,7 @@
     "test": "jest --env node",
     "start": "node server/server.js",
     "devStart": "nodemon server/server.js",
-    "build": "npm i -dev && webpack --mode production",
+    "build": "npm i -dev",
     "heroku-postbuild": "npm build"
   },
   "repository": {

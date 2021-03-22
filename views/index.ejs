@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Tyny URL Shortener</h1>
-        <form action="/shortUrls" method="POST" class="my-4 form-inline">
+        <form action="/api/url/shorten" method="POST" class="my-4 form-inline">
             <label class="sr-only" for="fullUrl">Url</label>
             <input type="url" name="fullUrl" id="fullUrl" placeholder="Url"
                 class="form-control col mr-2" required>
@@ -37,15 +37,4 @@
         </table>
     </div>
 </body>
-<script>
-    const shortUrls = [ localStorage.getItem('shortUrls') ];
-    console.log(shortUrls);
-
-    function setURLs() {
-        shortUrl = {
-            full: document.getElementById('')
-        }
-        shortUrls.push()
-    }
-</script>
 </html>

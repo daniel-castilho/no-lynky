@@ -1,8 +1,5 @@
 const express = require('express');
 const connectDB = require('./config/db');
-const mongoose = require('mongoose');
-const ShortUrl = require('./models/ShortUrl');
-const cors = require('cors');
 const app = express();
 
 const PORT = 3000;
@@ -12,28 +9,9 @@ connectDB();
 
 app.set('view engine', 'ejs');
 // app.use(express.urlencoded({ extended: false }));
-app.use(express.json({ extended: false }));
-app.use(cors());
+app.use(express.json({ extended: false }), express.urlencoded({ extended: false }));
 
-app.get('/', async (req, res) => {
-    const shortUrls = await ShortUrl.find();
-    res.render('index', { shortUrls: shortUrls });
-});
-
-app.post('/shortUrls', async (req, res) => {
-    await ShortUrl.create({ full: req.body.fullUrl });
-    res.redirect('/');
-});
-
-app.get('/:shortUrl', async (req, res) => {
-    const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
-    if (shortUrl == null) return res.sendStatus(404);
-
-    shortUrl.clicks++;
-    shortUrl.save();
-
-    res.redirect(shortUrl.full);
-});
+app.use('/', require('./routes/index'));
+app.use('/api/url', require('./routes/url'));
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
-

@@ -7,7 +7,8 @@ const ShortUrl = require('../../models/ShortUrl');
 // @route   GET /
 // @desc    Call index page
 router.get('/', async (req, res) => {
-    res.render('index', { shortUrls: await urlsService.getUrls() });
+    //res.render('index', { shortUrls: await urlsService.getUrls() });
+    res.json(await urlsService.getUrls());
 });
 
 // @route   GET /:shortUrl

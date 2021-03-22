@@ -4,7 +4,7 @@
   "description": "��#\u0000 \u0000n\u0000o\u0000-\u0000l\u0000y\u0000n\u0000k\u0000y\u0000\r\u0000 \u0000",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --env node",
     "start": "node server/server.js",
     "devStart": "nodemon server/server.js"
   },

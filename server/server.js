@@ -1,11 +1,11 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const database = require('./infra/db');
 const app = express();
 
 const PORT = 3000;
 
 // Connect to Database
-connectDB();
+database();
 
 app.set('view engine', 'ejs');
 // app.use(express.urlencoded({ extended: false }));

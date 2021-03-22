@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const validUrl = require('valid-url');
 const shortId = require('shortid');
+const urlsService = require('../services/urlsService');
 
-const ShortUrl = require('../models/ShortUrl');
+const ShortUrl = require('../../models/ShortUrl');
 
 // @route   POST /api/url/shorten
 // @desc    Create short URL
@@ -39,6 +40,15 @@ router.post('/shorten', async (req, res) => {
     } else {
         res.status(401).json('Invalid full url');
     }
+});
+
+// @route   DELETE /api/url/shorten/:shortUrl
+// @desc    Delete short URL
+router.delete('shorten', async (req, res) => {
+    res.json({
+        id: 1,
+        title: "teste API delete"
+    });
 });
 
 module.exports = router;

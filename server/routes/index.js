@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const urlsService = require('../services/urlsService');
 
-const ShortUrl = require('../models/ShortUrl');
+const ShortUrl = require('../../models/ShortUrl');
 
 // @route   GET /
 // @desc    Call index page
 router.get('/', async (req, res) => {
-    const shortUrls = await ShortUrl.find();
-    res.render('index', { shortUrls: shortUrls });
+    res.render('index', { shortUrls: await urlsService.getUrls() });
 });
 
 // @route   GET /:shortUrl

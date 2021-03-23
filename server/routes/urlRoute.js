@@ -1,91 +1,65 @@
 const e = require('express');
 const express = require('express');
 const router = express.Router();
-const urlsService = require('../services/urlService');
+const urlService = require('../services/urlService');
 
 // @route   GET /url
 // @desc    Get all urls
-router.get('/url', async (req, res) => {
+router.get('/url', async (req, res, next) => {
     try {
-        res.json(await urlsService.getUrls());
+        res.status(200).json(await urlService.getUrls());
     } catch (err) {
-        if (e.message === 'No url found') {
-            res.status(404).send(err.message);
-        } else {
-            res.status(500).send(err.message);
-        }
+        next(err);
     }
 });
 
 // @route   GET /url/:shortUrl
 // @desc    Given short url and return original/full url
-router.get('/url/:shortUrl', async (req, res) => {
+router.get('/url/:shortUrl', async (req, res, next) => {
     try {
-        console.log(req.params.shortUrl);
-        const url = await ShortUrl.findOne({ short: req.params.shortUrl });
-
-        if (url) {
-            url.clicks++;
-            url.save();
-
-            return res.redirect(url.full);
-        } else {
-            return res.status(404).json('No url found');
-        }
+        const url = await urlService.updateClick(req.params.shortUrl);
+        res.status(200).json(url.full);
     } catch (err) {
-        console.log(err);
-        res.status(500).json('Server error');
+        next(err);
     }
 });
 
 // @route   POST /api/url
 // @desc    Create short URL
-router.post('/url', async (req, res) => {
+router.post('/url', async (req, res, next) => {
     const full = req.body.fullUrl;
 
     try {
-        const newUrl = await urlsService.saveUrl(full);
+        const newUrl = await urlService.saveUrl(full);
         res.status(201).json(newUrl);
     } catch (err) {
-        if (e.message === 'Url already exists') {
-            res.status(409).send(err.message);
-        } else {
-            res.status(500).send(err.message);
-        }
+        next(err);
     }
 });
 
 // @route   DELETE /api/url/:shortUrl
 // @desc    Delete short URL
-router.delete('/url/:shortUrl', async (req, res) => {
+router.delete('/url/:shortUrl', async (req, res, next) => {
     try {
-        await urlsService.deleteUrl(req.params.shortUrl);
-        res.status(204).end();
+        await urlService.deleteUrl(req.params.shortUrl);
+        res.status(200).json('Update with success!').end();
         //return res.redirect(url);
     } catch (err) {
-        if (e.message === 'No url found') {
-            res.status(404).send(err.message);
-        } else {
-            res.status(500).send(err.message);
-        }
+        next(err);
     }
 });
 
 // @route   PUT /api/url
 // @desc    Update clic short url
-router.put('/url', async (req, res) => {
+router.put('/url', async (req, res, next) => {
     const short = req.body.shortUrl;
 
     try {
-        await urlsService.updateClick(short);
-        res.status(200).end();
+        await urlService.updateClick(short);
+        res.status(200).json('Update with success!').end();
         //return res.redirect(url);
     } catch (err) {
-        if (e.message === 'No url found') {
-            res.status(404).send(err.message);
-        } else {
-            res.status(500).send(err.message);
-        }
+        next(err);
     }
 });
 

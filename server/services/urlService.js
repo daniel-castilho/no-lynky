@@ -20,25 +20,21 @@ exports.getShortUrl = async (short) => {
 
 exports.saveUrl = async (full) => {
     // Check long url
-    if (validUrl.isUri(full)) {
-        const existingUrl = await urlData.getUrl(full);
+    if (!validUrl.isUri(full)) throw new Error('Invalid full url'); 
 
-        if (existingUrl) throw new Error('Url already exists');
+    const existingUrl = await urlData.getUrl(full);
+    if (existingUrl) throw new Error('Url already exists');
 
-        // Create short url code
-        const short = shortId.generate();
-        const clicks = 0;
-        return urlData.saveUrl({ full, short, clicks });
-    } else {
-        return res.status(401).json('Invalid full url');
-    }
+    // Create short url code
+    const short = shortId.generate();
+    const clicks = 0;
+    return urlData.saveUrl({ full, short, clicks });
 }
 
 exports.deleteUrl = async (short) => {
-    const existingUrl = await urlData.getShortUrl({ short });
+    const existingUrl = await urlData.getShortUrl(short);
     if (!existingUrl) throw new Error('No url found');
-    await urlData.deleteUrl(existingUrl.short);
-    return res.status(204).end();
+    return urlData.deleteUrl(existingUrl.short);
 }
 
 exports.updateClick = async (short) => {

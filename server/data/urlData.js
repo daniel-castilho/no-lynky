@@ -29,7 +29,7 @@ exports.saveUrl = async ({ full, short, clicks }) => {
 
 exports.deleteUrl = async (short) => {
 
-    return await ShortUrl.deleteOne({ short: short });
+    return await ShortUrl.deleteOne({ short });
 }
 
 exports.updateClick = async (short, clicks) => {

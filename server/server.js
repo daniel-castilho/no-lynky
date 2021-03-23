@@ -11,7 +11,6 @@ app.set('view engine', 'ejs');
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: false }), express.urlencoded({ extended: false }));
 
-app.use('/', require('./routes/index'));
-app.use('/api/url', require('./routes/url'));
+app.use('/api', require('./routes/urlRoute'));
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
